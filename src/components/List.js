@@ -16,38 +16,37 @@ export default class List extends Component {
   }
 
   componentDidMount() {
-    const groceries_ref = fire.database().ref().child(this.state.list);
+    const groceries_ref = fire.database().ref(this.state.list);
+    let groceriesArray = [];
     groceries_ref.on('value', snap => {
-      const groceriesArray = snap.val();
-      const arr = Object.keys(groceriesArray).map(function (key) { return groceriesArray[key]; });
-      this.setState({groceries: arr});
-    });
-    console.log("groceries: " + this.state.groceries);
-    console.log('length: ' + this.state.groceries.length);
+        groceriesArray = snap.val();
+        const arr = Object.keys(groceriesArray).map(function (key) { return groceriesArray[key]; });
+        this.setState({ groceries: arr });
+    }); // sort the data by the title
   }
 
   addGrocery(grocery) {
-    const idOfLastGrocery = this.state.groceries[this.state.groceries.length - 1].id;
-    const groceryRef = fire.database().ref().child(this.state.list + '/grocery' + (idOfLastGrocery + 1));
-    groceryRef.set({
-      id: idOfLastGrocery,
-      title: this.refs.newText,
-      amount: this.refs.newAmount
+    const randomNumber = Math.floor((Math.random() * 100000) + 1);
+    fire.database().ref(this.state.list + "/" + randomNumber).set({
+      id: randomNumber,
+      title: this.refs.newText.value,
+      dateAdded: new Date().toJSON().slice(0,10),
+      amount: this.refs.newAmount.value
     });
+    this.setState({ add: false });
   }
 
   editGrocery(grocery) {
-    const groceryRef = fire.database().ref().child(this.state.list + '/grocery' + grocery.id);
-    groceryRef.set({
+    fire.database().ref(this.state.list + "/" + grocery.id).set({
       id: grocery.id,
       title: grocery.title,
+      dateAdded: grocery.dateAdded,
       amount: grocery.amount
     });
   }
 
   deleteGrocery(grocery) {
-    console.log('**********' + this.state.list + '/grocery' + grocery.id);
-    fire.database().ref().child(this.state.list + '/grocery' + grocery.id).remove();
+    fire.database().ref(this.state.list + "/" + grocery.id).remove();
   }
 
   handleCancelAddClick = () => {
@@ -62,16 +61,18 @@ export default class List extends Component {
     if(this.state.add) {
       return (
         <li className="col-sm-12 col-md-12 list-group-item">
+        <h3>מוצר:</h3>
         <textarea className="form-control" ref="newText" defaultValue=''></textarea>
+        <h3>כמות:</h3>
         <textarea className="form-control" ref="newAmount" defaultValue=''></textarea>
-        <button onClick={this.addGrocery} className="btn btn-success">Save</button>
-        <button onClick={this.handleCancelAddClick} className="btn btn-primary">Cancel</button>
+        <button onClick={this.addGrocery.bind(this)} className="btn btn-success regular-button"><i className="fa fa-floppy-o" aria-hidden="true"></i> שמרי</button>
+        <button onClick={this.handleCancelAddClick} className="btn btn-primary regular-button"><i className="fa fa-times" aria-hidden="true"></i> בטלי</button>
       </li>
       );
     } else {
       return(
         <li className="col-sm-12 col-md-12 list-group-item">
-          <button className="btn btn-info" onClick={this.handleAddClick}>Add</button>
+          <button className="btn btn-info add-button" onClick={this.handleAddClick}><i className="fa fa-plus" aria-hidden="true"></i> הוסיפי</button>
         </li>
       );
     }
@@ -81,17 +82,17 @@ export default class List extends Component {
     return(
       <div>
         <h1>{this.state.header}</h1>
-        <ul className="list-group">
-          {this.renderAdd()}
-          {this.state.groceries.map(grocery => {
+        {this.renderAdd()}
+        {this.state.groceries.map(grocery => {
+          if (grocery.id !== 0)
             return <Grocery
               key={grocery.id}
               grocery={grocery}
               image={this.state.image}
-              editGrocery={this.editGrocery}
-              deleteGrocery={this.deleteGrocery} />
-          })}
-        </ul>
+              editGrocery={this.editGrocery.bind(this)}
+              deleteGrocery={this.deleteGrocery.bind(this)} />
+          })
+        }
       </div>
     );
   }

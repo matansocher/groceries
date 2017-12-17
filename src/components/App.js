@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import '../css/App.css';
 import TopSection from './TopSection';
 import List from './List';
 
@@ -8,12 +7,9 @@ class App extends Component {
     return (
       <div className="container">
         <TopSection />
-        <div className="row">
-          <div className="col-sm-6 list-group-item">
-            <List header="Eti's List" list="groceriesEti" img="https://lh3.googleusercontent.com/WBZgqB3VxZOS-cUGMVhJh2NGSeq6A4EXuKbTNB0iufH1CcV-SBM4SziVF70JCPaIKUpBJ5B3c8gxW46pWfc2YaHfymysI7IgQ-leiVEDaoOQAPBR5IGGonHzTJJeRR6vOtgu3Vi-HlICtyg77_eYj54xkw6oDekKUw5MalsP582QzHur7AJdai5f2c4ireo23Hvj3Tq16SLgbKmhwn5BS8EiIG-vq_NjCxLdF0-iRBVUfdClcejAZizJP4ZOWEUEbcsGrBWE9YV7ptmSiTV4GA_wMhcSzlS-2MeviKCDgzF6NlBa2rTEDmr608Rjm39xTA5AQiDb3FTCF-QOVk9wGc_KZxMUVQdKjapBOYrqcIbZTF-fU7x3Kg7Xzl9-k6qp0k_pqZplGs0VAXTxOCLBxJEkvVJHUn-stDzwJNskn32laDpzoT5lRZ-PeSyPixMhaPFVhYRzN-fmOLi0vuDsfGHHz1oYRP1612gsCeSXVkClL5Uc3Ka5zEQMlILLiN0TX7fcPP8ws9RGX3ZbStFYiDp-vTDAQL9400CxEC4pXQdiT_wtbAsb8XTiJCIA4NlbzfNemIJoVPo0Uk7gMHe-Vq4iGp3n-ugtMWRrC3nlgQ=w478-h637-no" />
-          </div>
-          <div className="col-sm-6 list-group-item">
-            <List header="Gila's List" list="groceriesGila" img="https://images.halloweencostumes.com/products/40646/1-1/adult-eggplant-costume.jpg" />
+        <div className="row hebrew">
+          <div className="col-sm-12 list-group-item">
+            <List header="הרשימה של אתי" list="groceriesEti" img="https://lh3.googleusercontent.com/o1ZjoXaf6Q2TI_6xa4mewi_T7QHTkwyIPQIEU9H2A8hcANjdZcgIZ7AffWrovHvLLXB9TZ332sQPuVU3_QiCuwnagNJ4oQQCi6lxWC8Huie93T-J6Z4S4rxhASB-VNXHiDB6_gOnq5P87NcRp6owCkDyRDKACD_2UpILVNl6OlznAR9EBRfNncM6XuvD6gSN1DGpztSn2ZgG76M43QduuybBu9i0FjyP67JcvcJ_-bQY0409X0xtNQQc6LCq1JPySGT2HtVF4TQTtZ8UrOJUHoOKl387Ron4tw5lYlfd0CKHl6agvcxhHo1_QLINbJxWL7POgkCemTiOH-l0O9qaXY0hIYzJhp-Ig_N-B3I0UYesIHJjJ6Y7jh6jpPZH2zx3O15NMlHkOd6FKaN6YU_VcDC8yz9iXtGIN9_S8r5Ib59AVp67tbmXDdQkyrfC730mRM8l8vyw4MbPJ_BftkIQ-lQFCAugw5xKvc_cc5X9mvMhmqzaJKpkSwDCV9CbeEiL0zJFWPCk31NpOJG7pLWT2qAT14DaSypQs4__dVsqxmoU3Qf-RuFupeOCqPB2MA=s637-w478-h637-no" />
           </div>
         </div>
       </div>
