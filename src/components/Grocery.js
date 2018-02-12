@@ -59,7 +59,6 @@ export default class Grocery extends Component {
   renderRegular() {
     return(
       <li className="col-sm-12 col-md-12 list-group-item">
-        <img className="mom-image img-rounded" src={this.props.image} alt="mom" />
         <h3 className="grocery-data">{this.state.title}</h3>
         <p className="grocery-data">כמות: {this.state.amount}</p>
         <p className="grocery-data">תאריך הוספה: {this.state.dateAdded}</p>

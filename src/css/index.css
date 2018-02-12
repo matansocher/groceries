@@ -2,10 +2,10 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
-  background-color: #050544;
+  /* background-color: #050544; */
 }
 .list-group-item {
-  background-color: #050544;
+  /* background-color: #050544; */
 }
 .jumbotronBackground {
   margin-top: 20px;
@@ -21,7 +21,7 @@ body {
 }
 .hebrew {
   direction: rtl;
-  color: #CDCECE;
+  color: #000000;
 }
 .mom-image {
   float: left;
