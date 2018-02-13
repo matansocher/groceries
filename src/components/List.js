@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import fire from '../config';
+import _ from 'lodash';
 import Grocery from './Grocery';
-import MDSpinner from 'react-md-spinner';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Snackbar from 'material-ui/Snackbar';
+import CircularProgress from 'material-ui/CircularProgress';
 
 export default class List extends Component {
 
@@ -12,30 +13,51 @@ export default class List extends Component {
     this.state = {
       header: props.header,
       list: props.list,
-      image: props.img,
       add: false,
       groceries: [],
       gesture: false,
       gestureText: '',
-      loading: true
+      loading: false
     };
+    this.addGrocery = this.addGrocery.bind(this);
+    this.editGrocery = this.editGrocery.bind(this);
+    this.deleteGrocery = this.deleteGrocery.bind(this);
+    this.sortGroceries = this.sortGroceries.bind(this);
   }
 
   componentDidMount() {
-    this.setState({}, ( loading: true ) => {
+    this.setState({ loading: true }, () => {
       const groceries_ref = fire.database().ref(this.state.list);
       let groceriesArray = [];
       groceries_ref.on('value', snap => {
-          groceriesArray = snap.val();
-          const arr = Object.keys(groceriesArray).map(function (key) { return groceriesArray[key]; });
-          this.setState({ groceries: arr });
+        groceriesArray = snap.val();
+        const arr = Object.keys(groceriesArray).map(function (key) { return groceriesArray[key]; });
+        this.setState({ groceries: arr });
       }); // sort the data by the title
     });
     this.setState({ loading: false });
   }
 
+  componentWillUpdate(nextProps, nextState) {
+    this.setState({ loading: true });
+    // console.log(this.state.groceries);
+    // console.log(nextState.groceries);
+    if ((this.state.groceries !== nextState.groceries)) { // check if array has changed
+      const tempGroceries = _.sortBy(this.state.groceries, [(item) => { return item.title; }]);
+      console.log(tempGroceries);
+      this.setState({ groceries: tempGroceries });
+      this.sortGroceries();
+    }
+    this.setState({ loading: false });
+  }
+
+  sortGroceries() {
+    const tempGroceries = _.sortBy(this.state.groceries, [(item) => { return item.title; }]);
+    // this.setState({ groceries: tempGroceries });
+  }
+
   addGrocery(grocery) {
-    this.setState({}, ( loading: true ) => {
+    this.setState({ loading: true }, () => {
       const randomNumber = Math.floor((Math.random() * 100000) + 1);
       fire.database().ref(this.state.list + "/" + randomNumber).set({
         id: randomNumber,
@@ -52,7 +74,7 @@ export default class List extends Component {
   }
 
   editGrocery(grocery) {
-    this.setState({}, ( loading: true ) => {
+    this.setState({ loading: true }, () => {
       fire.database().ref(this.state.list + "/" + grocery.id).set({
         id: grocery.id,
         title: grocery.title,
@@ -67,7 +89,7 @@ export default class List extends Component {
   }
 
   deleteGrocery(grocery) {
-    this.setState({}, ( loading: true ) => {
+    this.setState({ loading: true }, () => {
       fire.database().ref(this.state.list + "/" + grocery.id).remove().then(() => {
         setTimeout(() => {
           this.setState({ loading: false, gestureText: "המוצר נמחק, תודה אמא", gesture: true });
@@ -96,7 +118,7 @@ export default class List extends Component {
         <textarea className="form-control" ref="newText" defaultValue=''></textarea>
         <h3>כמות:</h3>
         <textarea className="form-control" ref="newAmount" defaultValue=''></textarea>
-        <button onClick={this.addGrocery.bind(this)} className="btn btn-success regular-button"><i className="fa fa-floppy-o" aria-hidden="true"></i> שמרי</button>
+        <button onClick={this.addGrocery} className="btn btn-success regular-button"><i className="fa fa-floppy-o" aria-hidden="true"></i> שמרי</button>
         <button onClick={this.handleCancelAddClick} className="btn btn-primary regular-button"><i className="fa fa-times" aria-hidden="true"></i> בטלי</button>
       </li>
       );
@@ -113,23 +135,24 @@ export default class List extends Component {
     return(
       <div>
         <h1>{this.state.header}</h1>
-        {this.state.loading ? <MDSpinner className="spinner" size={100} /> : <span />}
+        <MuiThemeProvider>
+          <div>
+            {this.state.loading ? <CircularProgress className="spinner" size={80} thickness={8} /> : <span />}
+            <Snackbar open={this.state.gesture} message={this.state.gestureText}
+              autoHideDuration={4000} onRequestClose={this.handleRequestClose} />
+          </div>
+        </MuiThemeProvider>
 
         {this.renderAdd()}
 
-        <MuiThemeProvider>
-          <Snackbar open={this.state.gesture} message={this.state.gestureText}
-            autoHideDuration={4000} onRequestClose={this.handleRequestClose} />
-        </MuiThemeProvider>
-
-        {this.state.groceries.map(grocery => {
+        {
+          this.state.groceries.map(grocery => {
           if (grocery.id !== 0)
             return <Grocery
               key={grocery.id}
               grocery={grocery}
-              image={this.state.image}
-              editGrocery={this.editGrocery.bind(this)}
-              deleteGrocery={this.deleteGrocery.bind(this)} />
+              editGrocery={this.editGrocery}
+              deleteGrocery={this.deleteGrocery} />
           })
         }
       </div>

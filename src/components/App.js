@@ -8,7 +8,7 @@ class App extends Component {
       <div className="container">
         <TopSection />
         <div className="row hebrew">
-          <div className="col-sm-12 list-group-item">
+          <div className="col-sm-12 list-group-item text-color">
             <List header="רשימת קניות" list="groceriesEti" />
           </div>
         </div>

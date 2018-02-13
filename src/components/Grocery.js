@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import { Button } from 'mdbootstrap';
 
 export default class Grocery extends Component {
 

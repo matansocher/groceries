@@ -21,7 +21,6 @@ body {
 }
 .hebrew {
   direction: rtl;
-  color: #000000;
 }
 .mom-image {
   float: left;
@@ -38,4 +37,16 @@ body {
 }
 .regular-button {
   margin-top: 10px;
+}
+.text-color {
+  color: #021f4f;
+}
+.spinner {
+  position: fixed;
+  /* top: 50%;
+  left: 50%;
+  margin-top: -50px;
+  margin-left: -100px; */
+  text-align: center;
+  z-index: -1;
 }
