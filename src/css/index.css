@@ -50,3 +50,9 @@ body {
   text-align: center;
   z-index: -1;
 }
+.float {
+	position: fixed;
+	bottom: 40px;
+	left: 40px;
+  z-index: 10;
+}
