@@ -34,8 +34,8 @@ export default class Grocery extends Component {
                onClick={this.handleDeleteClick} />
           </IconMenu>
         </MuiThemeProvider>
-        <h3 className="grocery-data">{this.state.title}</h3>
-        <p className="grocery-data">כמות: {this.state.amount}</p>
+        <h2 className="grocery-data">{this.state.title}</h2>
+        <h4 className="grocery-data">כמות: {this.state.amount}</h4>
         <p className="grocery-data">תאריך הוספה: {this.state.dateAdded}</p>
       </li>
     );

@@ -9,18 +9,18 @@ import NoMatch from './NoMatch'
 class App extends Component {
   render() {
     return (
-      <div className="container">
-        <MuiThemeProvider>
-          <AppBar
-            className="hebrew"
-            title="אמא תודה מראש אוהב אותך!"
-          />
-        </MuiThemeProvider>
+      <div>
+        <div>
+          <MuiThemeProvider>
+            <AppBar className="hebrew"
+              title="אמא תודה אוהב אותך!" />
+          </MuiThemeProvider>
+        </div>
 
-        <div className="row hebrew">
+        <div className="row hebrew col-sm-12">
           <Router>
             <div>
-              <div className="col-sm-12 list-group-item text-color">
+              <div className="col-sm-12 text-color">
                 <Switch>
                  <Route path="/AddGrocery" component={AddGrocery}/>
                  <Route path="/" component={List}/>

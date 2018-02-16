@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import fire from '../config';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import RaisedButton from 'material-ui/RaisedButton';
 import ClearIcon from 'material-ui/svg-icons/content/clear';
-import SaveIcon from 'material-ui/svg-icons/action/pregnant-woman';
+import SaveIcon from 'material-ui/svg-icons/action/done';
 
 export default class Grocery extends Component {
 
@@ -12,26 +11,20 @@ export default class Grocery extends Component {
     this.state = {
       list: "groceriesEti",
       title: '',
-      amount: '',
-      loading: false
+      amount: ''
     };
   }
 
   addGrocery = () => {
-    // this.setState({ loading: true }, () => {
-      const randomNumber = Math.floor((Math.random() * 100000) + 1);
-      fire.database().ref(this.state.list + "/" + randomNumber).set({
-        id: randomNumber,
-        title: this.refs.title.value,
-        dateAdded: new Date().toJSON().slice(0,10),
-        amount: this.refs.amount.value
-      }).then(() => {
-        setTimeout(() => {
-          this.setState({ loading: false, gestureText: "מוצר נוסף בהצלחה", gesture: true });
-        }, 1000);
-      });
-    // });
-    this.props.history.push('/');
+    const randomNumber = Math.floor((Math.random() * 100000) + 1);
+    fire.database().ref(this.state.list + "/" + randomNumber).set({
+      id: randomNumber,
+      title: this.refs.title.value,
+      dateAdded: new Date().toJSON().slice(0,10),
+      amount: this.refs.amount.value
+    }).then(() => {
+      this.props.history.push('/');
+    });
   }
 
   handleCancelClick = () => {
@@ -53,17 +46,23 @@ export default class Grocery extends Component {
   }
 
   render() {
+    const styles = {
+      largeIcon: {
+        width: 50,
+        height: 50,
+        color: '#031b42'
+      }
+    };
     return (
       <li className="col-sm-12 col-md-12 list-group-item">
 
         <MuiThemeProvider>
           <div>
-            <RaisedButton onClick={this.handleCancelClick} className="pull-left"
-                label="Cancel" primary={true} icon={<ClearIcon />} />
-            <RaisedButton onClick={this.addGrocery} className="pull-right"
-                label="Save" primary={true} icon={<SaveIcon />} />
+            <ClearIcon style={styles.largeIcon} className="pull-left icon" onClick={this.handleCancelClick} />
+            <SaveIcon style={styles.largeIcon} className="pull-right" onClick={this.addGrocery} />
           </div>
         </MuiThemeProvider>
+        <br />
         <br />
         <h3>מוצר:</h3>
         <textarea className="form-control" ref="title"
@@ -76,8 +75,6 @@ export default class Grocery extends Component {
           name="amount" value={this.state.amount}
           onChange={this.handleChange}>
         </textarea>
-
-
       </li>
     );
   }
